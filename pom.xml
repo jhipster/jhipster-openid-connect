@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.jhipster</groupId>
+    <artifactId>jhipster-openid-connect</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <name>JHipster OpenID Connect</name>
+    <description>JHipster OpenID Connect server, made with CloudFoundry UAA</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.cloudfoundry.identity</groupId>
+            <artifactId>cloudfoundry-identity-uaa</artifactId>
+            <version>3.1.0</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>cargo:run</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.cargo</groupId>
+                <artifactId>cargo-maven2-plugin</artifactId>
+                <configuration>
+                    <container>
+                        <containerId>tomcat8x</containerId>
+                        <type>embedded</type>
+                        <systemProperties>
+                            <UAA_CONFIG_PATH>${project.basedir}/src/main/resources/config</UAA_CONFIG_PATH>
+                        </systemProperties>
+                    </container>
+                    <configuration>
+                        <properties>
+                            <cargo.servlet.port>8999</cargo.servlet.port>
+                        </properties>
+                    </configuration>
+                    <deployables>
+                        <deployable>
+                            <groupId>org.cloudfoundry.identity</groupId>
+                            <artifactId>cloudfoundry-identity-uaa</artifactId>
+                            <type>war</type>
+                            <properties>
+                                <context>uaa</context>
+                            </properties>
+                        </deployable>
+                    </deployables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
